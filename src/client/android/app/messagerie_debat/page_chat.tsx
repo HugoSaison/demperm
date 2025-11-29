@@ -1,13 +1,42 @@
-import React from "react";
-import { View, FlatList, StyleSheet } from "react-native";
-import { TouchableOpacity, Text, Image } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, FlatList, StyleSheet, TouchableOpacity, Text, Image } from "react-native";
 import { useRouter } from "expo-router";
 import { ConversationPreview } from "@/types/conversation_types";
+import { UserModel } from "@/types/user_model";
+import { getConversations } from "@/services/messages";
 import { conversations } from "@/public/message/exemple_preview_message" //<< ?
 
 
 export default function ChatPage() {
   const router = useRouter();
+  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY0NDQzNzY4LCJpYXQiOjE3NjQ0NDAxNjgsImp0aSI6IjE4Nzk4NjMyNzM1NjQxNzQ5MjY3MzdlOWMxNzU0OGViIiwidXNlcl9pZCI6ImVkYmUxYzcyLTlmNDYtNDFmMy1hZDQ4LWUyNzkzM2YwZTFmZCJ9.9U7-QQRWGNG7mxkZWfwhqYOenZ779t-5ctJ68Vslia0";
+
+  const [conversations, setConversations] = useState<ConversationPreview[]>([]);
+
+  useEffect(() => {
+    const fetchConversations = async () => {
+      try {
+        const data = await getConversations(token);
+
+        const previews: ConversationPreview[] = data.results.map((c: any) => ({
+          id: c.other_user_id,
+          with: {
+            id: c.other_user_id,
+            username: c.other_user_username,
+            photo: undefined,
+          } as UserModel,
+          lastMessage: c.last_message || "",
+          lastTime: new Date(c.last_message_at).getTime(),
+        }));
+
+        setConversations(previews);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchConversations();
+  }, []);
 
   const renderItem = (item: ConversationPreview) => {
     const time = new Date(item.lastTime).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
@@ -21,7 +50,7 @@ export default function ChatPage() {
             params: {
               withId: item.with.id,
               username: item.with.username,
-              photo: item.with.photo, // attention : require() ne passe pas dans params directement
+              photo: item.with.photo,
             },
           });
         }}
