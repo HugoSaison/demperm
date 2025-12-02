@@ -1,6 +1,9 @@
 import React from "react";
-import { View, Text, FlatList, Image } from "react-native";
+import { View, Text, FlatList, Image, TouchableOpacity } from "react-native";
+import { useRouter } from 'expo-router';
 import styles from '@/styles/vote_style';
+import ProfilePicture from './ProfilePicture';
+
 
 export type Person = {
   id: string;
@@ -17,10 +20,15 @@ type ListePersonnesProps = {
 };
 
 const ComponentList: React.FC<ListePersonnesProps> = ({ data }) => {
+    const router = useRouter();
   const renderItem = ({ item }: { item: Person }) => (
     <View style={[styles.item, { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }]}>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <Image source={item.Photo} style={styles.avatar} />
+              <TouchableOpacity 
+        onPress={() =>router.push('/profile')/* router.push({ pathname: '/profile', params: { userId: '123' } })*/} 
+      >
+        <ProfilePicture size={40}/>
+      </TouchableOpacity>
         <View style={{ marginLeft: 10 }}>
           {/* Nom et Prénom */}
           <Text style={styles.text}>{item.Prenom + " " + item.Nom}</Text>

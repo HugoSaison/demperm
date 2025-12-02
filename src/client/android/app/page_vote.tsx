@@ -1,9 +1,21 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, Image } from "react-native";
 import styles from '@/styles/vote_style';
+import { useRouter } from 'expo-router';
 import ComponentList, { Person } from '@/components/ComponentList';
 
-export default function VotePage() {
+
+type Props = {
+  route: {
+    params: {
+      theme: string;
+    };
+  };
+};
+
+export default function VotePage({ route }: Props) {
+  const router = useRouter();
+  const { theme } = router.query as { theme: string };
   const [searchText, setSearchText] = useState('');
 
     // { id: "1", Nom: "Dupont", Prenom: "Jean1", Photo_de_Profil: require('@/public/images/utilisateur2.png'), points: 10 },
@@ -27,7 +39,7 @@ export default function VotePage() {
 
 return (
   <View style={styles.container}>
-    <Text style={styles.title}>Séléction pour le vote</Text>
+    <Text style={styles.title}>Séléction pour le vote </Text>
     
 
 <View style={styles.searchContainer}>

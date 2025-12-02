@@ -24,13 +24,13 @@ const BottomBar: React.FC = () => {
           <Ionicons name="arrow-back" size={30} color="#00008B" />
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => router.push('/')} style={styles.iconContainer}>
-          {isActive('/') && <View style={styles.bump} />}
+        <TouchableOpacity onPress={() => router.push('/archive')} style={styles.iconContainer}>
+          {isActive('/archive') && <View style={styles.bump} />}
           <Ionicons name="home" size={30} color="#00008B" />
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => router.push('/page_vote')} style={styles.iconContainer}>
-          {isActive('/page_vote') && <View style={styles.bump} />}
+        <TouchableOpacity onPress={() => router.push('/page_vote_main')} style={styles.iconContainer}>
+          {isActive('/page_vote_main') && <View style={styles.bump} />}
           <Ionicons name="archive-outline" size={30} color="#00008B" />
         </TouchableOpacity>
 
