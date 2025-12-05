@@ -1,28 +1,32 @@
 import React, { useState } from 'react';
 import { View, Text, Image, TextInput, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import styles from '@/styles/vote_style';
-import { useUser } from '../contexts/user-context';
+
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
+
+import { auth } from '../../firebaseConfig.ts';
+
+import { router } from "expo-router";
 
 
 export default function ConnectionScreen() {
-  const { login, register } = useUser()!;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isRegistering, setIsRegistering] = useState(false);
 
   const handleAction = async () => {
-    if (isRegistering) {
-      const e = await register(email, password);
-      if (e) {
-        alert("Erreur lors de l'inscription: " + e);
+    try {
+      if (isRegistering) {
+        await createUserWithEmailAndPassword(auth, email, password);
+        console.log("Inscription réussie !");
+        router.replace("/profile");
       } else {
-        alert("Inscription réussie !");
+        await signInWithEmailAndPassword(auth, email, password);
+        console.log("Connexion réussie !");
+        router.replace("/profile");
       }
-    } else {
-      const e = await login(email, password);
-      if (e) {
-        alert("Erreur lors de la connexion: " + e);
-      }
+    } catch (error: any) {
+      alert("Erreur : " + error.message);
     }
   };
 
