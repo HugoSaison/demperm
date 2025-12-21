@@ -88,14 +88,19 @@ export const rejectFollowRequest = async (userId: string): Promise<boolean> => {
  * @param page Le numéro de page (Défaut: 1).
  * @param pageSize La taille de la page (Défaut: 20).
  */
-export const getCurrentUserFollowers = async (
-  page: number = 1,
-  pageSize: number = 20,
-): Promise<UserFollowSerializer[]> => {
-  const response = await socialApi.get<UserFollowSerializer[]>('/followers/me/followers/', {
-    params: { page, page_size: pageSize },
-  });
-  return response.data;
+// export const getCurrentUserFollowers = async (
+//   page: number = 1,
+//   pageSize: number = 20,
+// ): Promise<UserFollowSerializer[]> => {
+//   const response = await socialApi.get<UserFollowSerializer[]>('/followers/me/followers/', {
+//     params: { page, page_size: pageSize },
+//   });
+//   return response.data;
+// };
+export const getCurrentUserFollowers = async (page = 1, pageSize = 20) => {
+    await new Promise(resolve => setTimeout(resolve, 300));
+    // Renvoie une liste fictive pour que .length fonctionne
+    return [ { id: 1 }, { id: 2 } ]; 
 };
 
 /**
@@ -104,12 +109,16 @@ export const getCurrentUserFollowers = async (
  * @param page Le numéro de page (Défaut: 1).
  * @param pageSize La taille de la page (Défaut: 20).
  */
-export const getCurrentUserFollowing = async (
-  page: number = 1,
-  pageSize: number = 20,
-): Promise<UserFollowSerializer[]> => {
-  const response = await socialApi.get<UserFollowSerializer[]>('/followers/me/following/', {
-    params: { page, page_size: pageSize },
-  });
-  return response.data;
+// export const getCurrentUserFollowing = async (
+//   page: number = 1,
+//   pageSize: number = 20,
+// ): Promise<UserFollowSerializer[]> => {
+//   const response = await socialApi.get<UserFollowSerializer[]>('/followers/me/following/', {
+//     params: { page, page_size: pageSize },
+//   });
+//   return response.data;
+// };
+export const getCurrentUserFollowing = async (page = 1, pageSize = 20) => {
+    await new Promise(resolve => setTimeout(resolve, 300));
+    return [ { id: 1 }, { id: 2 }, { id: 3 } ];
 };

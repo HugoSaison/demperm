@@ -22,8 +22,8 @@ interface UserProfileData {
 const dummyPosts: Post[] = [
     {
         post_id: '1',
-        author_id: 'e4597bc9-960c-4d4f-812b-c51504004005',
-        author_username: 'Alice',
+        author_id: '7670601b-00b2-4b1b-a938-6074ec212651',
+        author_username: 'Flavien Hallier',
         subforum_id: '2',
         title: '1er Post',
         content: '1er post content',
@@ -36,8 +36,8 @@ const dummyPosts: Post[] = [
     },
     {
         post_id: '2',
-        author_id: 'e4597bc9-960c-4d4f-812b-c51504004005',
-        author_username: 'Alice',
+        author_id: '7670601b-00b2-4b1b-a938-6074ec212651',
+        author_username: 'Flavien Hallier',
         subforum_id: '2',
         title: '2e Post',
         content: '2e post content',
@@ -50,8 +50,8 @@ const dummyPosts: Post[] = [
     },
     {
         post_id: '3',
-        author_id: 'e4597bc9-960c-4d4f-812b-c51504004005',
-        author_username: 'Alice',
+        author_id: '7670601b-00b2-4b1b-a938-6074ec212651',
+        author_username: 'Flavien Hallier',
         subforum_id: '2',
         title: '3e Post',
         content: '3e post content',
@@ -64,8 +64,8 @@ const dummyPosts: Post[] = [
     },
     {
         post_id: '4',
-        author_id: 'e4597bc9-960c-4d4f-812b-c51504004005',
-        author_username: 'Alice',
+        author_id: '7670601b-00b2-4b1b-a938-6074ec212651',
+        author_username: 'Flavien Hallier',
         subforum_id: '2',
         title: '4e Post',
         content: '4e post content',

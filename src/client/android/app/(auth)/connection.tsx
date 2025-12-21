@@ -4,7 +4,7 @@ import styles from '@/styles/vote_style';
 
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
 
-import { auth } from '../../firebaseConfig.ts';
+import { auth } from '@/firebaseConfig';
 
 import { router } from "expo-router";
 

@@ -53,6 +53,27 @@ export interface UpdateUserSettingsData {
   language?: string;
 }
 
+// Simulation de la base de données
+let mockUser: CurrentUser = {
+    user_id: "7670601b-00b2-4b1b-a938-6074ec212651",
+    email: "flavien@example.com",
+    username: "Toulouuu",
+    is_admin: false,
+    is_banned: false,
+    created_at: "2025-11-29T13:37:39Z",
+    last_login_at: null,
+    profile: {
+        display_name: "Flavien Hallier",
+        profile_picture_url: "https://via.placeholder.com/150",
+        bio: "Ceci est ma bio hardcodée pour la démo.",
+        location: "Paris, France",
+        privacy: "public",
+    },
+    settings: {
+        email_notifications: true,
+        language: "fr"
+    }
+};
 
 // -----------------------------------------------------------
 // Fonctions d'appel à l'API
@@ -63,8 +84,10 @@ export interface UpdateUserSettingsData {
  * Endpoint: GET /users/me/
  */
 export const getCurrentUser = async (): Promise<CurrentUser> => {
-  const response = await socialApi.get<CurrentUser>('/users/me/');
-  return response.data;
+  // const response = await socialApi.get<CurrentUser>('/users/me/');
+  // return response.data;
+  await new Promise(resolve => setTimeout(resolve, 500));
+  return {...mockUser}
 };
 
 /**
@@ -72,9 +95,24 @@ export const getCurrentUser = async (): Promise<CurrentUser> => {
  * Endpoint: GET /users/{user_id}/
  * @param userId L'ID de l'utilisateur à récupérer.
  */
+// export const getUserPublicProfile = async (userId: string): Promise<UserPublicProfile> => {
+//   const response = await socialApi.get<UserPublicProfile>(`/users/${userId}/`);
+//   return response.data;
+// };
 export const getUserPublicProfile = async (userId: string): Promise<UserPublicProfile> => {
-  const response = await socialApi.get<UserPublicProfile>(`/users/${userId}/`);
-  return response.data;
+    console.log("[MOCK] GET /users/" + userId);
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    // On retourne le mockUser formaté pour l'interface UserPublicProfile
+    return {
+        user_id: userId,
+        username: mockUser.username,
+        display_name: mockUser.profile.display_name,
+        profile_picture_url: mockUser.profile.profile_picture_url,
+        bio: mockUser.profile.bio,
+        location: mockUser.profile.location,
+        created_at: mockUser.created_at
+    };
 };
 
 /**
@@ -82,12 +120,36 @@ export const getUserPublicProfile = async (userId: string): Promise<UserPublicPr
  * Endpoint: PATCH /users/me/update/
  * @param data Les champs de profil à mettre à jour.
  */
-export const updateCurrentUserProfile = async (
-  profileUpdates: UpdateUserProfileData, 
-): Promise<CurrentUser> => {
-  const response = await socialApi.patch<CurrentUser>('/users/me/update/', { data: profileUpdates });
+// export const updateCurrentUserProfile = async (
+//   profileUpdates: UpdateUserProfileData, 
+// ): Promise<CurrentUser> => {
+//   const response = await socialApi.patch<CurrentUser>('/users/me/update/', { data: profileUpdates });
   
-  return response.data;
+//   return response.data;
+// };
+export const updateCurrentUserProfile = async (
+    payload: UpdateUserProfileData | FormData
+): Promise<CurrentUser> => {
+    console.log("[MOCK] PATCH /users/me/update/", payload);
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    // Gestion que ce soit du JSON ou du FormData (vu tes tests précédents)
+    if (payload instanceof FormData) {
+        mockUser.username = (payload.get('username') as string) || mockUser.username;
+        mockUser.profile.display_name = (payload.get('display_name') as string) || mockUser.profile.display_name;
+        mockUser.profile.bio = (payload.get('bio') as string) || mockUser.profile.bio;
+        mockUser.profile.location = (payload.get('location') as string) || mockUser.profile.location;
+        mockUser.profile.privacy = (payload.get('privacy') as 'public' | 'private') || mockUser.profile.privacy;
+    } else {
+        // Si c'est du JSON classique
+        if (payload.username) mockUser.username = payload.username;
+        if (payload.display_name) mockUser.profile.display_name = payload.display_name;
+        if (payload.bio) mockUser.profile.bio = payload.bio;
+        if (payload.location) mockUser.profile.location = payload.location;
+        if (payload.privacy) mockUser.profile.privacy = payload.privacy;
+    }
+
+    return { ...mockUser };
 };
 
 /**
